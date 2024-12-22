@@ -1,0 +1,80 @@
+GLUE LOGIC :
+We will do this by writing a verilog module which connects the three verilog modules and allows them to pass information among each other. 
+Such modules whose function is only to join and connect many other modules are sometimes known as “glue logic”.
+
+module module1 (
+    input wire clk,
+    input wire rst,
+    input wire [7:0] data_in,
+    output reg [7:0] data_out
+);
+    always @(posedge clk or posedge rst) begin
+        if (rst)
+            data_out <= 0;
+        else
+            data_out <= data_in + 1;
+    end
+endmodule
+
+module module2 (
+    input wire clk,
+    input wire rst,
+    input wire [7:0] data_in,
+    output reg [7:0] data_out
+);
+    always @(posedge clk or posedge rst) begin
+        if (rst)
+            data_out <= 0;
+        else
+            data_out <= data_in * 2;
+    end
+endmodule
+
+module module3 (
+    input wire clk,
+    input wire rst,
+    input wire [7:0] data_in,
+    output reg [7:0] data_out
+);
+    always @(posedge clk or posedge rst) begin
+        if (rst)
+            data_out <= 0;
+        else
+            data_out <= data_in - 1;
+    end
+endmodule
+
+module glue_logic (
+    input wire clk,
+    input wire rst,
+    input wire [7:0] data_in,
+    output wire [7:0] final_out
+);
+    wire [7:0] out1, out2, out3;
+
+    module1 u1 (
+        .clk(clk),
+        .rst(rst),
+        .data_in(data_in),
+        .data_out(out1)
+    );
+
+    module2 u2 (
+        .clk(clk),
+        .rst(rst),
+        .data_in(out1),
+        .data_out(out2)
+    );
+
+    module3 u3 (
+        .clk(clk),
+        .rst(rst),
+        .data_in(out2),
+        .data_out(out3)
+    );
+
+    assign final_out = out3;
+endmodule
+
+
+
