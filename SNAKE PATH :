@@ -1,0 +1,38 @@
+SNAKE PATH :
+I found some information about snake paths on ChipVerify. 
+A snake path is a path that goes through different levels of hierarchies and returns to the same level where it started from. 
+These paths should be avoided because they can create complex and hard-to-debug designs.
+
+module snake_path (
+    input wire clk,
+    input wire rst,
+    output reg [3:0] x, y // Coordinates of the snake's head
+);
+    reg [1:0] direction; // 0: right, 1: down, 2: left, 3: up
+
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin
+            x <= 0;
+            y <= 0;
+            direction <= 0;
+        end else begin
+            case (direction)
+                0: if (x < 15) x <= x + 1; else direction <= 1; // Move right
+                1: if (y < 15) y <= y + 1; else direction <= 2; // Move down
+                2: if (x > 0) x <= x - 1; else direction <= 3; // Move left
+                3: if (y > 0) y <= y - 1; else direction <= 0; // Move up
+            endcase
+        end
+    end
+endmodule
+
+Explanation
+Module Declaration: Declares the snake_path module with inputs for the clock (clk) and reset (rst), and outputs for the coordinates of the snake's head (x, y).
+
+Direction Register: Uses a 2-bit register to store the current direction of the snake (0: right, 1: down, 2: left, 3: up).
+
+Always Block: The always block is triggered on the positive edge of the clock or the reset signal.
+
+Reset Condition: If the reset signal is asserted, the coordinates and direction are reset.
+
+Movement Logic: The snake moves in the current direction until it reaches the edge of the grid, then changes direction.
