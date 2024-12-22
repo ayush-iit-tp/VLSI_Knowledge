@@ -1,4 +1,4 @@
-SNAKE PATH :
+SNAKE PATH
 I found some information about snake paths on ChipVerify. 
 A snake path is a path that goes through different levels of hierarchies and returns to the same level where it started from. 
 These paths should be avoided because they can create complex and hard-to-debug designs.
